@@ -22,7 +22,7 @@
           <br>
           <div class="from-group">
             <label for="image">Image</label><br>
-            <input type="file" id="image" name="productImage" accept="image/*">
+            <input type="file" id="image" name="productImage" accept="image/*" ref="file" v-on:change="handleFileUpload()">
           </div>
           
         </fieldset>
@@ -44,22 +44,54 @@ export default {
   components: {},
   data(){
     return {
+      file: '',
       name: "",
       description: "",
       price: ""
     }
   },
   methods: {
+    handleFileUpload(){
+      this.file = this.$refs.file.files[0];
+    },
     submit() {
-      let data = {
-        name: this.name,
-        description: this.description,
-        price: this.price
+      if(this.file === ''){
+        let data = {
+          name: this.name,
+          description: this.description,
+          price: this.price,
+          imageURL: ''
+        }
+      
+        axios.post('http://localhost:3000/products', data)
+        .then( () => this.$router.push("/"))
+        .catch(() => console.log("An error has ocurred"));
+        
+      }else{
+        let formData = new FormData();
+        formData.append('productImage', this.file);
+
+        axios.post( 'http://localhost:3000/products/image',
+          formData,
+          {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+          })
+          .then((imageURL) => {
+            let data = {
+              name: this.name,
+              description: this.description,
+              price: this.price,
+              imageURL: imageURL.data
+            }
+          
+            axios.post('http://localhost:3000/products', data)
+            .then( () => this.$router.push("/"))
+            .catch(() => console.log("An error has ocurred"));
+            }).catch(() => console.log("There was an error"));
       }
-    
-      axios.post('http://localhost:3000/products', data)
-      .then( () => this.$router.push("/"))
-      .catch(() => console.log("An error has ocurred"));
+      
     }
   }
 };
