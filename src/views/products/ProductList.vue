@@ -27,12 +27,12 @@ export default {
   },
   data(){
     return {
-      products: [] //Array where the products are going to be stored
+      products: [], //Array where the products are going to be stored
     }
   },
   mounted() {
     //The products gets retrieved
-    axios.get('http://localhost:3000/products/')
+    axios.get(process.env.VUE_APP_URL + 'products')
     .then((res) => {
       //The retrieved products get stored in the products array
       this.products = res.data;

@@ -55,7 +55,7 @@ export default {
   },
   mounted() {
     //The product info gets retrieved
-    axios.get('http://localhost:3000/products/' + this.id)
+    axios.get(process.env.VUE_APP_URL + 'products/' + this.id)
     .then((res) => {
       this.idRes = res.data.id;
       this.name = res.data.name;
@@ -83,7 +83,7 @@ export default {
         }
         
         //Request for uploading the product
-        axios.put('http://localhost:3000/products', data)
+        axios.put(process.env.VUE_APP_URL + 'products', data)
         .then( () => this.$router.push({ name: 'ProductDetail', params: { id: this.idRes }}))//The user gets redirected to the product detail
         .catch(() => console.log("An error has ocurred"));
         
@@ -95,7 +95,7 @@ export default {
         formData.append('id', this.idRes);
 
         //Request for uploading only the image
-        axios.put( 'http://localhost:3000/products/image',
+        axios.put( process.env.VUE_APP_URL + 'products/' + 'image',
           formData,
           {
             headers: {
@@ -112,7 +112,7 @@ export default {
               price: this.price
             }
             //Reques for uploading the product
-            axios.put('http://localhost:3000/products', data)
+            axios.put(process.env.VUE_APP_URL + 'products', data)
             .then( () => this.$router.push({ name: 'ProductDetail', params: { id: this.idRes }}))
             .catch(() => console.log("An error has ocurred"));
             }).catch(() => console.log("There was an error"));

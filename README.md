@@ -1,19 +1,18 @@
-# products-frontend
+# Products Frontend
 
-## Project setup
+This is a frontend for the products app
+
+## Get started
+
+Install all the dependencies
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+## Get the app running
+
+Get the server running. With this command the server will by running on localhost:8080/
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

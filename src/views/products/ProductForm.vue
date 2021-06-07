@@ -70,7 +70,7 @@ export default {
         }
 
         //Request for uploading the product
-        axios.post('http://localhost:3000/products', data)
+        axios.post(process.env.VUE_APP_URL + 'products', data)
         .then( (data) => {
           //The user gets redirected to the product detail
           this.$router.push({ name: 'ProductDetail', params: { id: data.data.id }});
@@ -85,7 +85,7 @@ export default {
         formData.append('productImage', this.file);
 
         //Request for uploading only the image
-        axios.post( 'http://localhost:3000/products/image',
+        axios.post( process.env.VUE_APP_URL + 'products/' + 'image',
           formData,
           {
             headers: {
@@ -103,7 +103,7 @@ export default {
             }
 
             //Reques for uploading the product
-            axios.post('http://localhost:3000/products', data)
+            axios.post(process.env.VUE_APP_URL + 'products', data)
             .then( (data) => {
               this.$router.push({ name: 'ProductDetail', params: { id: data.data.id }});
             })
