@@ -64,7 +64,10 @@ export default {
         }
       
         axios.post('http://localhost:3000/products', data)
-        .then( () => this.$router.push("/"))
+        .then( (data) => {
+          this.$router.push({ name: 'ProductDetail', params: { id: data.data.id }});
+          console.log(data);
+        })
         .catch(() => console.log("An error has ocurred"));
         
       }else{
@@ -87,7 +90,10 @@ export default {
             }
           
             axios.post('http://localhost:3000/products', data)
-            .then( () => this.$router.push("/"))
+            .then( (data) => {
+              this.$router.push({ name: 'ProductDetail', params: { id: data.data.id }});
+              console.log(data);
+            })
             .catch(() => console.log("An error has ocurred"));
             }).catch(() => console.log("There was an error"));
       }
