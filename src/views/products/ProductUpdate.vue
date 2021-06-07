@@ -22,7 +22,7 @@
           <br>
           <div class="from-group">
             <label for="image">Image</label><br>
-            <input type="file" id="image" name="productImage" accept="image/*">
+            <input type="file" id="image" name="productImage" accept="image/*" ref="file" v-on:change="handleFileUpload()">
           </div>
           
         </fieldset>
@@ -46,6 +46,7 @@ export default {
   },
   data(){
     return {
+      file: '',
       idRes: null,
       name: "",
       description: "",
@@ -63,17 +64,49 @@ export default {
     .catch(() => console.log("An error has ocurred"));
   },
   methods: {
+    handleFileUpload(){
+      this.file = this.$refs.file.files[0];
+    },
     submit() {
-      let data = {
-        id: this.idRes,
-        name: this.name,
-        description: this.description,
-        price: this.price
+      if(this.file === ''){
+        let data = {
+          id: this.idRes,
+          name: this.name,
+          description: this.description,
+          price: this.price
+        }
+      
+        axios.put('http://localhost:3000/products', data)
+        .then( () => this.$router.push("/"))
+        .catch(() => console.log("An error has ocurred"));
+        
+      }else{
+        console.log("aaa")
+        let formData = new FormData();
+        formData.append('productImage', this.file);
+        formData.append('id', this.idRes);
+
+
+        axios.put( 'http://localhost:3000/products/image',
+          formData,
+          {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+          })
+          .then(() => {
+            let data = {
+              id: this.idRes,
+              name: this.name,
+              description: this.description,
+              price: this.price
+            }
+          
+            axios.put('http://localhost:3000/products', data)
+            .then( () => this.$router.push("/"))
+            .catch(() => console.log("An error has ocurred"));
+            }).catch(() => console.log("There was an error"));
       }
-    
-      axios.put('http://localhost:3000/products/', data)
-      .then( () => this.$router.push("/"))
-      .catch(() => console.log("An error has ocurred"));
     }
   }
 }
