@@ -29,6 +29,9 @@
 </template>
 
 <script>
+
+import axios from "axios";
+
 export default {
   props: ['id'],
   name: 'ProductDetail',
@@ -40,10 +43,11 @@ export default {
       }
   },
   mounted() {
-    fetch('http://localhost:3000/products/' + this.id)
-    .then( res => res.json())
-    .then( data => this.product = data)
-    .catch(() => console.log("An error has ocurred"))
+    axios.get('http://localhost:3000/products/' + this.id)
+    .then((res) => {
+      this.product = res.data;
+    })
+    .catch(() => console.log("An error has ocurred"));
   }
 }
 </script>
