@@ -2,6 +2,9 @@
   <div class="productList">
     <div v-if="products">
       <h1 class="component-title">Product List</h1>
+      <router-link class="btn btn-info btn-l mt-1 mb-1 ms-1 me-1" :to="{ name: 'ProductForm' }">
+        Add product
+      </router-link>
       <article v-for="product in products" :key="product.id" class="content-section">
         <div class="d-flex">
           <div style="min-width: 0;">
@@ -11,7 +14,6 @@
         </div>
       </article>
     </div>
-      
   </div>
 </template>
 
