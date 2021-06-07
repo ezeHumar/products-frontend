@@ -45,6 +45,7 @@ export default {
       }
   },
   mounted() {
+    //The product gets retrieved
     axios.get('http://localhost:3000/products/' + this.id)
     .then((res) => {
       this.product = res.data;
@@ -53,16 +54,19 @@ export default {
   },
   methods: {
     deleteProduct(){
+      //Request for deleting the product
       axios.delete('http://localhost:3000/products/' + this.id)
       .then(() => {
-        console.log("Product deleted");
+        //Redirects to the homepage
         this.$router.push("/");
       })
       .catch(() => console.log("An error has ocurred"));
     },
     deleteImage(){
+      //Request for deleting the image
       axios.delete('http://localhost:3000/products/' + this.id + '/image')
       .then(() => {
+        //Redirects to the product detail
         this.$router.go({ name: 'ProductDetail', params: { id: this.id } });
       })
       .catch(() => console.log("An error has ocurred"));

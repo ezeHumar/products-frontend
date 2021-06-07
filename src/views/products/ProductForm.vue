@@ -44,36 +44,47 @@ export default {
   components: {},
   data(){
     return {
-      file: '',
-      name: "",
-      description: "",
-      price: ""
+      file: '', //Variable for the image
+      name: "", //Name of the product
+      description: "", //Description of the product
+      price: "" //Price of the product
     }
   },
   methods: {
     handleFileUpload(){
+      //When a fine gets selected by the user, it gets saved in the file variable
       this.file = this.$refs.file.files[0];
     },
     submit() {
-      if(this.file === ''){
+
+      //If the user selected an image the image first gets uploaded and then the product itself gets uploaded
+      //If the user didn't select an image the product gets uploaded without an image
+      if(this.file === ''){//If there is no picture uploaded
+
+        //The data object is built
         let data = {
           name: this.name,
           description: this.description,
           price: this.price,
           imageURL: ''
         }
-      
+
+        //Request for uploading the product
         axios.post('http://localhost:3000/products', data)
         .then( (data) => {
+          //The user gets redirected to the product detail
           this.$router.push({ name: 'ProductDetail', params: { id: data.data.id }});
           console.log(data);
         })
         .catch(() => console.log("An error has ocurred"));
         
-      }else{
+      }else{//If there is a picture uploaded
+
+        //A formdata is made for sending the image
         let formData = new FormData();
         formData.append('productImage', this.file);
 
+        //Request for uploading only the image
         axios.post( 'http://localhost:3000/products/image',
           formData,
           {
@@ -82,17 +93,19 @@ export default {
             }
           })
           .then((imageURL) => {
+
+            //The image url is recived and then the product is uploaded
             let data = {
               name: this.name,
               description: this.description,
               price: this.price,
               imageURL: imageURL.data
             }
-          
+
+            //Reques for uploading the product
             axios.post('http://localhost:3000/products', data)
             .then( (data) => {
               this.$router.push({ name: 'ProductDetail', params: { id: data.data.id }});
-              console.log(data);
             })
             .catch(() => console.log("An error has ocurred"));
             }).catch(() => console.log("There was an error"));

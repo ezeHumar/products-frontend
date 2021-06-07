@@ -46,14 +46,15 @@ export default {
   },
   data(){
     return {
-      file: '',
-      idRes: null,
-      name: "",
-      description: "",
-      price: ""
+      file: '', //Variable for the image
+      idRes: null, //ID of the product
+      name: "", //Name of the product
+      description: "", //Description of the product
+      price: "" //Price of the product
     }
   },
   mounted() {
+    //The product info gets retrieved
     axios.get('http://localhost:3000/products/' + this.id)
     .then((res) => {
       this.idRes = res.data.id;
@@ -65,28 +66,35 @@ export default {
   },
   methods: {
     handleFileUpload(){
+      //When a fine gets selected by the user, it gets saved in the file variable
       this.file = this.$refs.file.files[0];
     },
     submit() {
-      if(this.file === ''){
+      //If the user selected an image the image first gets uploaded and then the product itself gets uploaded
+      //If the user didn't select an image the product gets uploaded without an image
+      if(this.file === ''){//If there is no picture uploaded
+
+        //The data object is built
         let data = {
           id: this.idRes,
           name: this.name,
           description: this.description,
           price: this.price
         }
-      
+        
+        //Request for uploading the product
         axios.put('http://localhost:3000/products', data)
-        .then( () => this.$router.push({ name: 'ProductDetail', params: { id: this.idRes }}))
+        .then( () => this.$router.push({ name: 'ProductDetail', params: { id: this.idRes }}))//The user gets redirected to the product detail
         .catch(() => console.log("An error has ocurred"));
         
-      }else{
-        console.log("aaa")
+      }else{//If there is a picture uploaded
+
+        //A formdata is made for sending the image
         let formData = new FormData();
         formData.append('productImage', this.file);
         formData.append('id', this.idRes);
 
-
+        //Request for uploading only the image
         axios.put( 'http://localhost:3000/products/image',
           formData,
           {
@@ -95,13 +103,15 @@ export default {
             }
           })
           .then(() => {
+
+            //The image is updated and then the product is uploaded
             let data = {
               id: this.idRes,
               name: this.name,
               description: this.description,
               price: this.price
             }
-          
+            //Reques for uploading the product
             axios.put('http://localhost:3000/products', data)
             .then( () => this.$router.push({ name: 'ProductDetail', params: { id: this.idRes }}))
             .catch(() => console.log("An error has ocurred"));

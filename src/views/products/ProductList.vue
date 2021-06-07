@@ -27,12 +27,14 @@ export default {
   },
   data(){
     return {
-      products: []
+      products: [] //Array where the products are going to be stored
     }
   },
   mounted() {
-     axios.get('http://localhost:3000/products/')
+    //The products gets retrieved
+    axios.get('http://localhost:3000/products/')
     .then((res) => {
+      //The retrieved products get stored in the products array
       this.products = res.data;
     })
     .catch(() => console.log("An error has ocurred"));
